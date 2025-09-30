@@ -15,6 +15,12 @@ class CalculatorViewModel : ViewModel(), ICalculatorViewModel {
 
     override fun onButtonClick(symbol: String) {
         when (symbol) {
+            "⌫" -> {
+                if (_expression.value.isNotEmpty()) {
+                    _expression.value = _expression.value.dropLast(1)
+                }
+            }
+
             "C" -> {
                 _expression.value = ""
                 _result.value = ""
