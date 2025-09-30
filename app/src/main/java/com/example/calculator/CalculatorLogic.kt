@@ -7,7 +7,12 @@ fun evaluateExpression(expression: String): String {
         val tokens = tokenize(expression)
         val rpn = toRPN(tokens)
         val result = evalRPN(rpn)
-        result.toString()
+
+        if (result % 1.0 == 0.0) {
+            result.toLong().toString()
+        } else {
+            result.toString()
+        }
     } catch (e: Exception) {
         "Error"
     }
@@ -20,7 +25,7 @@ private fun tokenize(expr: String): List<String> {
         when {
             ch.isDigit() || ch == '.' -> number += ch
 
-            ch in listOf('+', '−', '-', '×', '*', '÷', '/') -> {
+            ch in listOf('+', '−', '-', '×', '*', '÷', '/', '%') -> {
                 if (number.isNotEmpty()) {
                     tokens.add(number)
                     number = ""
@@ -47,7 +52,8 @@ private fun toRPN(tokens: List<String>): List<String> {
     val precedence = mapOf(
         "+" to 1, "-" to 1,
         "×" to 2, "*" to 2,
-        "÷" to 2, "/" to 2
+        "÷" to 2, "/" to 2,
+        "%" to 2
     )
 
     for (token in tokens) {
@@ -92,6 +98,7 @@ private fun evalRPN(tokens: List<String>): Double {
                     "-" -> a - b
                     "×", "*" -> a * b
                     "÷", "/" -> a / b
+                    "%" -> a % b
                     else -> throw IllegalArgumentException("Unknown operator: $token")
                 }
                 stack.push(result)
