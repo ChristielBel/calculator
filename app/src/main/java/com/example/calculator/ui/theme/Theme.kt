@@ -1,58 +1,43 @@
 package com.example.calculator.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CalculatorTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colors = if (darkTheme) darkColorScheme(
+        primary = DarkButton,
+        onPrimary = DarkButtonText,
+        background = DarkBackground,
+        surface = DarkResultBackground,
+        onSurface = DarkText
+    ) else lightColorScheme(
+        primary = LightButton,
+        onPrimary = LightButtonText,
+        background = LightBackground,
+        surface = LightResultBackground,
+        onSurface = LightText
+    )
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
+        colorScheme = colors,
+        typography = Typography(),
         content = content
     )
 }
+
+val ButtonColor: Color
+    @Composable get() = MaterialTheme.colorScheme.primary
+
+val OperatorButtonColor: Color
+    @Composable get() = MaterialTheme.colorScheme.secondaryContainer
+
+val ButtonTextColor: Color
+    @Composable get() = MaterialTheme.colorScheme.onPrimary
