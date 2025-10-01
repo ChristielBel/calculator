@@ -2,7 +2,6 @@ package com.example.calculator.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -31,7 +30,7 @@ fun CalculatorTheme(
 
     MaterialTheme(
         colorScheme = colors,
-        typography = Typography(),
+        typography = Typography,
         content = content
     )
 }
@@ -47,3 +46,6 @@ val EqualsButtonColor: Color
 
 val ButtonTextColor: Color
     @Composable get() = MaterialTheme.colorScheme.onPrimary
+
+val ResultTextColor: Color
+    @Composable get() = if (isSystemInDarkTheme()) DarkResultText else LightResultText
