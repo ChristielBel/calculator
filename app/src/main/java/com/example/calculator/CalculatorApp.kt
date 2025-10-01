@@ -1,5 +1,6 @@
 package com.example.calculator
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -35,7 +36,7 @@ fun CalculatorApp(viewModel: ICalculatorViewModel) {
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
@@ -86,7 +87,10 @@ fun CalculatorApp(viewModel: ICalculatorViewModel) {
                             onClick = { viewModel.onButtonClick(symbol) },
                             shape = CircleShape,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = if (symbol in listOf(
+                                containerColor = when (symbol) {
+                                    "=" -> EqualsButtonColor
+
+                                    in listOf(
                                         "+",
                                         "−",
                                         "-",
@@ -97,9 +101,10 @@ fun CalculatorApp(viewModel: ICalculatorViewModel) {
                                         "C",
                                         "%",
                                         "⌫",
-                                    )
-                                )
-                                    OperatorButtonColor else ButtonColor,
+                                    ) -> OperatorButtonColor
+
+                                    else -> ButtonColor
+                                },
                                 contentColor = ButtonTextColor
                             ),
                             modifier = Modifier
@@ -118,8 +123,9 @@ fun CalculatorApp(viewModel: ICalculatorViewModel) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
+@Preview("Light Theme")
+@Preview("Dark Theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun PreviewCalculatorApp() {
     CalculatorTheme {
         CalculatorApp(viewModel = FakeCalculatorViewModel())
