@@ -1,5 +1,6 @@
 package com.example.calculator.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -9,18 +10,20 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CalculatorTheme(
-    darkTheme: Boolean = false,
+    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) darkColorScheme(
         primary = DarkButton,
         onPrimary = DarkButtonText,
+        secondaryContainer = DarkOperatorButton,
         background = DarkBackground,
         surface = DarkResultBackground,
         onSurface = DarkText
     ) else lightColorScheme(
         primary = LightButton,
         onPrimary = LightButtonText,
+        secondaryContainer = LightOperatorButton,
         background = LightBackground,
         surface = LightResultBackground,
         onSurface = LightText
@@ -38,6 +41,9 @@ val ButtonColor: Color
 
 val OperatorButtonColor: Color
     @Composable get() = MaterialTheme.colorScheme.secondaryContainer
+
+val EqualsButtonColor: Color
+    @Composable get() = if (isSystemInDarkTheme()) DarkEqualsButton else LightEqualsButton
 
 val ButtonTextColor: Color
     @Composable get() = MaterialTheme.colorScheme.onPrimary
