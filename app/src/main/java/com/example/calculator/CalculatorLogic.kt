@@ -4,7 +4,8 @@ import java.util.Stack
 
 fun evaluateExpression(expression: String): String {
     return try {
-        val tokens = tokenize(expression)
+        val normalizedExpr = expression.replace(',', '.')
+        val tokens = tokenize(normalizedExpr)
         val rpn = toRPN(tokens)
         val result = evalRPN(rpn)
 
@@ -30,7 +31,22 @@ private fun tokenize(expr: String): List<String> {
                     tokens.add(number)
                     number = ""
                 }
-                tokens.add(ch.toString())
+
+                if (ch == '-' && (tokens.isEmpty() || tokens.last() in listOf(
+                        "+",
+                        "-",
+                        "×",
+                        "*",
+                        "÷",
+                        "/",
+                        "%",
+                        "("
+                    ))
+                ) {
+                    number += ch
+                } else {
+                    tokens.add(ch.toString())
+                }
             }
 
             ch == '(' || ch == ')' -> {
@@ -42,7 +58,9 @@ private fun tokenize(expr: String): List<String> {
             }
         }
     }
-    if (number.isNotEmpty()) tokens.add(number)
+    if (number.isNotEmpty()) {
+        tokens.add(number)
+    }
     return tokens
 }
 
